@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    <!-- send table urdf to param server -->
+   <!-- <param name="bound_cam_description" textfile="$(find bachelor)/models/boundingbox_camera/camera.urdf" /> -->
+   
+   <!-- push table_description to factory and spawn robot in gazebo -->
+   <!-- <node name="spawn_cam" pkg="gazebo" type="spawn_model" args="-urdf -param bound_cam_description -z 1 -model bound_cam" respawn="false" output="screen" /> -->
+    <node name="spawn_cam" pkg="gazebo_ros" type="spawn_model" args="-file $(find bachelor)/models/boundingbox_camera/camera.urdf -urdf -z 1 -model bound_cam" />
+</launch>

@@ -1,0 +1,14 @@
+<launch> 
+    <!-- Service Nodes -->
+    <node name="kill_shit_odom" pkg="bachelor" type="kill_shit_odom.py" output="screen"></node>
+    <include file="$(find bachelor)/roslaunch/localization.launch"/>
+    <include file="$(find bachelor)/roslaunch/transform_pc2.launch"/>
+
+    <include file="$(find bachelor)/roslaunch/rtab_odom_from_rbcar.launch"/> 
+    <include file="$(find bachelor)/roslaunch/move_base.launch"/>
+    
+    <!-- Start Nodes -->
+    <node name="example_node" pkg="bachelor" type="brain.py" output="screen"></node>
+    <!-- <node name="example_node" pkg="bachelor" type="example.py" output="screen"></node> -->
+    <!-- <node name="example_node" pkg="bachelor" type="example_node" output="screen"></node> -->    
+</launch>

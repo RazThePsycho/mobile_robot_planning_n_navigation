@@ -1,0 +1,7 @@
+<launch> 
+    <!-- Start Nodes -->
+    <arg name="launch_rviz" default="true"/>
+    <arg name="file_rviz" default="rbcar"/>
+
+    <node if="$(arg launch_rviz)" name="myrviz" pkg="rviz" type="rviz" required="true" args="-d $(find bachelor)/rviz/$(arg file_rviz).rviz"/>
+</launch>

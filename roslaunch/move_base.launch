@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="prefix" default="robot"/>
+	<arg name="cmd_vel_topic" default="move_base/cmd_vel"/>
+	<arg name="odom_topic" default="odom"/>
+	<arg name="primitive_filename" default="rbcar_05.mprim" />
+
+
+	<rosparam file="$(find bachelor)/configs/movebase/cmd_vel_to_ackermann_drive.yaml" command="load" />
+	<node pkg="bachelor"  type="cmd_vel_to_ackermann_drive.py" name="cmd_vel_to_ackermann_drive" output="screen"></node>
+	<!-- Run move_base -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+		<rosparam file="$(find bachelor)/configs/movebase/move_base_params.yaml" command="load" />
+		<rosparam file="$(find bachelor)/configs/movebase/costmap_common_params.yaml" command="load" ns="global_costmap" />
+		<rosparam file="$(find bachelor)/configs/movebase/costmap_common_params.yaml" command="load" ns="local_costmap" />
+		<rosparam file="$(find bachelor)/configs/movebase/local_costmap_params.yaml" command="load" />
+		<rosparam file="$(find bachelor)/configs/movebase/global_costmap_params_no_map_for_gps.yaml" command="load" />
+		<!-- <rosparam file="$(find bachelor)/configs/movebase/global_costmap_params_map.yaml" command="load" /> -->
+
+		<!-- <rosparam file="$(find bachelor)/configs/movebase/global_planner_params.yaml" command="load" /> -->
+		<!--<rosparam file="$(find bachelor)/configs/movebase/rsband_local_planner_params.yaml" command="load" />-->
+		<param name="SBPLLatticePlanner/primitive_filename" value="$(find bachelor)/configs/movebase/primitives/$(arg primitive_filename)" />
+		<rosparam file="$(find bachelor)/configs/movebase/sbpl_global_planner_params.yaml" command="load" />
+		
+		
+		<!-- navfn/NavfnROS -->
+		<rosparam file="$(find bachelor)/configs/movebase/teb_local_planner_params_for_gps.yaml" command="load" />
+
+		<!--<param name="TebLocalPlannerROS/odom_topic" value="$(arg odom_topic)"/>-->
+		<remap from="cmd_vel" to="$(arg cmd_vel_topic)" />
+		<remap from="odom" to="$(arg odom_topic)" />
+		<remap from="map" to="rtabmap/grid_map"/>
+
+	</node>
+
+</launch>

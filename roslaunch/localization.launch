@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="id_robot" default="$(optenv ROBOT_ID robot)"/>
+    <arg name="prefix" default="$(arg id_robot)_"/>
+    <arg name="odom_topic" default="odom"/>
+    <arg name="imu_topic" default="imu/data"/>
+
+    <!-- <group ns="$(arg id_robot)_odometry"> -->
+        <!-- <remap from="imu/data" to="/$(arg id_robot)/imu/data" />
+        <remap from="odom" to="/$(arg id_robot)/odom" />
+        <remap from="gps/fix" to="/$(arg id_robot)/gps/fix" /> -->
+
+        <!-- <node pkg="tf" type="static_transform_publisher" name="odom_broadcaster" args="0 0 0 0 0 0 1 $(arg prefix)odom $(arg prefix)base_footprint 10" /> -->
+        <!-- EKF Global -->
+        <node pkg="robot_localization" type="ekf_localization_node" name="ekf_global" clear_params="true" output="screen">
+            <rosparam command="load" file="$(find bachelor)/configs/localization/ekf_global.yaml" subst_value="true"/>
+            <remap from="odometry/filtered" to="odometry/filtered/global"/>
+        </node>
+        
+        <!-- NavSat Transform -->
+        <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_gps" clear_params="true" output="screen" >
+            <rosparam command="load" file="$(find bachelor)/configs/localization/navsat.yaml"  subst_value="true"/>
+            <remap from="odometry/filtered" to="odometry/filtered/global"/>
+        </node>
+
+        <!-- EKF Local -->
+        <node pkg="robot_localization" type="ekf_localization_node" name="ekf_local" clear_params="true" output="screen">
+            <rosparam command="load" file="$(find bachelor)/configs/localization/ekf_local.yaml" subst_value="true"/>
+            <remap from="odometry/filtered" to="odometry/filtered/local"/>
+        </node>
+
+    <!-- </group> -->
+
+</launch>

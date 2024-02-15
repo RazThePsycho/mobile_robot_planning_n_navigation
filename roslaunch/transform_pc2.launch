@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="transform_pc2" pkg="bachelor" type="transform_pc2_node" output="screen" >
+    </node>
+</launch>

@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="brain_node" pkg="bachelor" type="brain.py" output="screen"></node>
+</launch>

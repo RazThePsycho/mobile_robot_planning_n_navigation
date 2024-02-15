@@ -1,0 +1,4 @@
+twist_cmd_topic: /robot/move_base/cmd_vel
+ackermann_cmd_topic: /robot/robot_cmd_vel
+wheelbase: 1.83
+frame_id: robot_base_link
